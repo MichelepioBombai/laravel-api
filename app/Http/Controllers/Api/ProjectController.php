@@ -15,7 +15,11 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::all();
+        $projects = Project::select('title', 'text', 'category_id', 'created_at', 'id')
+        ->orderBy('updated_at', 'DESC')
+        ->paginate(6);
+        
+     
         return response()->json($projects);
     }
 
@@ -39,7 +43,10 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        //
+        $project = Project::find($id);
+        if(!$project) return response(null, 404);
+
+        return response()->json($project);
     }
 
 
